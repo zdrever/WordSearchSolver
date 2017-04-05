@@ -17,7 +17,12 @@ def dictionaryfromfile(filename):
 
     Args:
         filename: string of the filename that needs to be read
+
+    Returns:
+        dict that maps a letter of words to a list of words that
+        start with that letter
     '''
+    wordlist = dict()
     with open(filename) as f:
         rows = f.readlines()
         for line in rows:
@@ -32,6 +37,9 @@ def dictionaryfromfile(filename):
                     wordlist[token[0]].append(token)
                 else:
                     wordlist[token[0]].append(token)
+
+    return wordlist
+
 
 def find_letter_indices(letter, array):
     '''Given a letter, find all indices of that letter in the CharArray
@@ -48,7 +56,7 @@ def find_letter_indices(letter, array):
     ret = dict()
     for x in range(array.height()-1):
         for y in range(array.width()-1):
-            if array[i][j] = letter:
+            if array[i][j] == letter:
                 ret[(x,y)] = array.neighbours((x,y))
 
     return ret
@@ -65,25 +73,60 @@ def find_words(dictionary, array):
     Returns:
         A set of FoundWords.
     '''
-
-    for letter in dictionary:
-        letter_i = find_letter_indices(letter, array)
-        wordlist = dictionary[letter]
+    found = set()
+    for char in dictionary:
+        # find letter index --> neighbour relation for all instances of a character once
+        letter_x_y = find_letter_indices(char, array)
+        # pull the word list from the dictionary of words to find
+        wordlist = dictionary[char]
+        # for each word, calculate the possible starts and directions depending
+        # upon the first two letters of the word
         for word in wordlist:
-            
+            # for each x,y index in letter_x_y, check if the second letter in
+            # the word is in the neighbours of the instance of the first word
+            for x_y, nbrs in letter_x_y:
+                if word[1] not in nbrs:
+                    continue
+                else:
+                    i = x_y
+                    # Need to make sure there can be two instances of directions for
+                    # the same index
+                    d_indices = [i for i, x in enumerate(my_list) if x == word[0]]
+                    direction = [directions[index] for index in d_indices]
+                    l = len(word)
+                    for d in direction:
+                        f = FoundWord(i, d, l)
+                    to_check += f
 
+            # IDEA: is there an easy check to remove directions that are not
+            # far enough away from the edge for the word to fit?
 
+            while len(to_check) > 1:
+                l_count = 2
+                f = to_check.pop()
+                # index, direction, length = foundword from to_check set
+                i, d, l = f
+                dx, dy = d
+                x, y = i
+                index = (x + dx * l_count, y + dy * l_count)
+                if word[l_count] == array.direction_find(index, d):
+                    to_check += f
+                l_count += 1
 
+            found += to_check
 
-
-
+    return found
 
 if __name__ == "__main__":
     a = CharArray()
-    a.arrayfromfile("wordsearch1.txt")
+    a.arrayfromfile("testarray.txt")
+    print(a[0])
 
-    dictionaryfromfile("wordsearch1words.txt")
+    wordlist= dictionaryfromfile("testwords.txt")
+    print(words)
 
+    for char in wordlist:
+        print(find_letter_indices(char, )
 
 
 

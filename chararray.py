@@ -127,3 +127,7 @@ class CharArray:
 
             Returns:
                 The next character in that direction
+            '''
+            x,y = index
+            dx,dy = direction
+            return self.__array[x+dx][y+dy]

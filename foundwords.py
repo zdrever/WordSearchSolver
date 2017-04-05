@@ -1,4 +1,4 @@
-class FoundWords:
+class FoundWord:
     '''A class to represent found words in a word search
 
     Attributes:
