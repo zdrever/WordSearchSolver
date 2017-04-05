@@ -2,9 +2,25 @@ class CharArray:
     '''Type to represent word search array of characers.
 
     Attributes:
-        __array: 2D array (list of lists)
-        __height: max index of rows
-        __width: max index of columns
+        __array:
+            2D array (list of lists)
+        __height:
+            max index of rows
+        __width:
+            max index of columns
+
+    Methods:
+        height:
+            returns the maximum index of the rows
+        width:
+            returns the maxmimus index of the columns
+        readfile:
+            takes a text representation of the array
+            and fills the already initialized CharArray
+        neighbours:
+            takes a position tuple and returns all the
+            characters in the immediate vicinity of
+            the position
     '''
 
     def __init__(self):
@@ -14,14 +30,14 @@ class CharArray:
         return self.__array[index]
 
     def height(self):
-        '''Returns the maximum index of the rows'''
-        return len(self.__array)-1
+        '''Returns the height of the array'''
+        return len(self.__array)
 
     def width(self):
-        '''Returns the maximum index of the columns'''
-        return len(self.__array[0])-1
+        '''Returns the width of the array'''
+        return len(self.__array[0])
 
-    def readfile(self, filename):
+    def arrayfromfile(self, filename):
         '''Initializes a CharArray from a text file representation of
         a word search array.
 
@@ -30,7 +46,7 @@ class CharArray:
 
         Raises:
             RuntimeError: if the strings of character in the file to be
-            read aren't all the same character. Most likely cause is the OCR
+            read aren't all the same length. Most likely cause is the OCR
             didn't work on the photo of the array
 
         @TODO: Make the RuntimeError. For now assume proper .txt file
@@ -62,17 +78,17 @@ class CharArray:
             self.__array[x+1][y],\
             self.__array[x+1][y+1]]
         # Top Right
-        elif x == 0 and y == self.width():
+        elif x == 0 and y == self.width()-1:
             return [self.__array[x][y-1],\
             self.__array[x+1][y-1],\
             self.__array[x+1][y]]
         # Bottom Left
-        elif x == self.height() and y == 0:
+        elif x == self.height()-1 and y == 0:
             return [self.__array[x-1][y],\
             self.__array[x-1][y+1],\
             self.__array[x][y+1]]
         # Bottom Right
-        elif x == self.height() and y == len(self.__array[0])-1:
+        elif x == self.height()-1 and y == self.width()-1:
             return [self.__array[x-1][y-1],\
             self.__array[x-1][y],\
             self.__array[x][y-1]]
@@ -82,13 +98,13 @@ class CharArray:
         elif x == 0:
             delta = [(dx, dy) for (dx, dy) in directions if dx != -1]
         # Bottom
-        elif x == self.height():
+        elif x == self.height()-1:
             delta = [(dx, dy) for (dx, dy) in directions if dx != 1]
-        # Left
+        # Lefts
         elif y == 0:
             delta = [(dx, dy) for (dx, dy) in directions if dy != -1]
         # Right
-        elif y == self.width():
+        elif y == self.width()-1:
             delta = [(dx, dy) for (dx, dy) in directions if dy != 1]
 
         # General Case
@@ -100,3 +116,14 @@ class CharArray:
         for (dx, dy) in delta:
             ret.append(self.__array[x+dx][y+dy])
         return ret
+
+        def direction_find(index, direction):
+            '''Given an index and a direction, return the next letter in that
+            direction.
+
+            Args:
+                index: the index of a letter
+                direction: an x,y unit direction tuple
+
+            Returns:
+                The next character in that direction
