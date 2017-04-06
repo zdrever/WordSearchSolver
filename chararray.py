@@ -49,8 +49,8 @@ class CharArray:
             read aren't all the same length. Most likely cause is the OCR
             didn't work on the photo of the array
 
-        @TODO: Make the RuntimeError. For now assume proper .txt file
-        format
+        @TODO: Implement Error handling. Is it possible to handle size of row
+        errors in the UI?
         '''
         with open(filename) as f:
             rows = f.readlines()
@@ -66,17 +66,18 @@ class CharArray:
 
         Returns:
             list: all characters that immediately surround the character in
-            position p. Ordering is left to right, top to bottom
+            position p. Ordering is left to right, top to bottom. Positions that
+            are set to None are not on the array.
         '''
         directions = [(-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1)]
         x, y = p
-    
+
         ret = list()
         for (dx, dy) in directions:
             if x + dx < 0 or x + dx > self.height()-1:
                 ret.append(None)
             elif y + dy < 0 or y + dy > self.width()-1:
-                ret.appends(None)
+                ret.append(None)
             else:
                 ret.append(self.__array[x+dx][y+dy])
 
@@ -91,7 +92,9 @@ class CharArray:
             direction: an x,y unit direction tuple
 
         Returns:
-            The next character in that direction
+            False: if the next character in that direction would be off the
+            edge of the array
+            Next Character: if the next character is on the array.
         '''
         x,y = index
         dx,dy = direction

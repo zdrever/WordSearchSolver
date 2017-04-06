@@ -54,13 +54,11 @@ def indexToNeighbours(letter, array):
         of all neighbours of that index.
     '''
     ret = dict()
-    print(array.height())
-    print(array.width())
     for x in range(array.height()):
         for y in range(array.width()):
-            print(x,y)
             if array[x][y] == letter:
                 ret[(x,y)] = array.neighbours((x,y))
+
     return ret
 
 def find_words(dictionary, array):
@@ -76,12 +74,12 @@ def find_words(dictionary, array):
         A set of FoundWords.
     '''
     found = set()
+    print(dictionary)
     for char in dictionary:
+        wordlist = dictionary[char]
         # find letter index --> neighbour relation for all instances of a character once
         position_to_neighbours = indexToNeighbours(char, array)
         print("position_to_neighbours", position_to_neighbours)
-        # pull the word list from the dictionary of words to find
-        wordlist = dictionary[char]
         # for each word, calculate the possible starts and directions depending
         # upon the first two letters of the word
         print(wordlist)
@@ -137,10 +135,10 @@ def find_words(dictionary, array):
 
 if __name__ == "__main__":
     a = CharArray()
-    a.arrayfromfile("testarray.txt")
+    a.arrayfromfile("wordsearch1.txt")
     print(a[0])
 
-    wordlist= dictionaryfromfile("testwords.txt")
+    wordlist= dictionaryfromfile("wordsearch1words.txt")
     print(wordlist)
 
     for char in wordlist:
@@ -149,7 +147,7 @@ if __name__ == "__main__":
     found = find_words(wordlist, a)
     print(found)
     for f in found:
-        print(f.index)
+        print(f.index, f.direction)
 
 
     # print("X max", a.height())
