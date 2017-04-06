@@ -12,7 +12,6 @@ class FoundWord:
         self.index = i
         self.direction = d
         self.length = l
-        self.__word = list(index, direction, length)
 
     def setindex(self, i):
          self.index = i

@@ -1,15 +1,15 @@
 from chararray import CharArray
-from prefixtree import PrefixTree
+from foundwords import FoundWord
 
 wordlist = dict()
 
-directions = {0: (-1,-1),\
-              1: (-1,0),\
-              2: (-1,1),\
-              3: (0,-1),\
-              4: (0,1),\
-              5: (1,-1),\
-              6: (1,0),\
+directions = {0: (-1,-1),
+              1: (-1,0),
+              2: (-1,1),
+              3: (0,-1),
+              4: (0,1),
+              5: (1,-1),
+              6: (1,0),
               7: (1,1)}
 
 def dictionaryfromfile(filename):
@@ -41,7 +41,7 @@ def dictionaryfromfile(filename):
     return wordlist
 
 
-def find_letter_indices(letter, array):
+def indexToNeighbours(letter, array):
     '''Given a letter, find all indices of that letter in the CharArray
     using a binary search
 
@@ -54,11 +54,13 @@ def find_letter_indices(letter, array):
         of all neighbours of that index.
     '''
     ret = dict()
-    for x in range(array.height()-1):
-        for y in range(array.width()-1):
-            if array[i][j] == letter:
+    print(array.height())
+    print(array.width())
+    for x in range(array.height()):
+        for y in range(array.width()):
+            print(x,y)
+            if array[x][y] == letter:
                 ret[(x,y)] = array.neighbours((x,y))
-
     return ret
 
 def find_words(dictionary, array):
@@ -76,45 +78,61 @@ def find_words(dictionary, array):
     found = set()
     for char in dictionary:
         # find letter index --> neighbour relation for all instances of a character once
-        letter_x_y = find_letter_indices(char, array)
+        position_to_neighbours = indexToNeighbours(char, array)
+        print("position_to_neighbours", position_to_neighbours)
         # pull the word list from the dictionary of words to find
         wordlist = dictionary[char]
         # for each word, calculate the possible starts and directions depending
         # upon the first two letters of the word
+        print(wordlist)
         for word in wordlist:
-            # for each x,y index in letter_x_y, check if the second letter in
+            queue = list()
+            print("word:", word)
+            # for each x,y index in position_to_neighbours, check if the second letter in
             # the word is in the neighbours of the instance of the first word
-            for x_y, nbrs in letter_x_y:
+            for pos, nbrs in position_to_neighbours.items():
+                print("index {}, nbrs {}, word[1] {}".format(pos, nbrs, word[1]))
                 if word[1] not in nbrs:
                     continue
                 else:
-                    i = x_y
+                    i = pos
                     # Need to make sure there can be two instances of directions for
                     # the same index
-                    d_indices = [i for i, x in enumerate(my_list) if x == word[0]]
+                    d_indices = [i for i, x in enumerate(nbrs) if x == word[1]]
                     direction = [directions[index] for index in d_indices]
                     l = len(word)
                     for d in direction:
-                        f = FoundWord(i, d, l)
-                    to_check += f
+                        queue.append(FoundWord(i, d, l))
 
             # IDEA: is there an easy check to remove directions that are not
             # far enough away from the edge for the word to fit?
+            letter = 2
+            added_back = 0
+            while len(queue) > 1:
+                print("letter index", letter)
+                f = queue.pop(0)
+                print("f.index", f.index)
+                # index, direction, length = foundword from queue set
+                print("direction", f.direction)
+                next_letter = array.direction_find(f.index, f.direction, letter)
+                if not next_letter:
+                    print("GET OUTTA HERE")
+                    if added_back == len(queue):
+                        added_back = 0
+                        letter += 1
+                    continue
+                if word[letter] == next_letter:
+                    queue.append(f)
+                    added_back += 1
+                print("len(queue)",len(queue))
+                print("added_back", added_back)
+                if added_back == len(queue):
+                    added_back = 0
+                    letter += 1
+            f = queue.pop()
+            found.add(f)
 
-            while len(to_check) > 1:
-                l_count = 2
-                f = to_check.pop()
-                # index, direction, length = foundword from to_check set
-                i, d, l = f
-                dx, dy = d
-                x, y = i
-                index = (x + dx * l_count, y + dy * l_count)
-                if word[l_count] == array.direction_find(index, d):
-                    to_check += f
-                l_count += 1
-
-            found += to_check
-
+            # @TODO: Handle Fucked up word searches
     return found
 
 if __name__ == "__main__":
@@ -123,11 +141,15 @@ if __name__ == "__main__":
     print(a[0])
 
     wordlist= dictionaryfromfile("testwords.txt")
-    print(words)
+    print(wordlist)
 
     for char in wordlist:
-        print(find_letter_indices(char, )
+        print(indexToNeighbours(char, a))
 
+    found = find_words(wordlist, a)
+    print(found)
+    for f in found:
+        print(f.index)
 
 
     # print("X max", a.height())

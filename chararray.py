@@ -70,64 +70,35 @@ class CharArray:
         '''
         directions = [(-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1)]
         x, y = p
-        print("x,y",x,y)
-        # Corner Cases
-        # Top Left
-        if x == 0 and y == 0:
-            return [self.__array[x][y+1],\
-            self.__array[x+1][y],\
-            self.__array[x+1][y+1]]
-        # Top Right
-        elif x == 0 and y == self.width()-1:
-            return [self.__array[x][y-1],\
-            self.__array[x+1][y-1],\
-            self.__array[x+1][y]]
-        # Bottom Left
-        elif x == self.height()-1 and y == 0:
-            return [self.__array[x-1][y],\
-            self.__array[x-1][y+1],\
-            self.__array[x][y+1]]
-        # Bottom Right
-        elif x == self.height()-1 and y == self.width()-1:
-            return [self.__array[x-1][y-1],\
-            self.__array[x-1][y],\
-            self.__array[x][y-1]]
-
-        # Edge Cases
-        # Top
-        elif x == 0:
-            delta = [(dx, dy) for (dx, dy) in directions if dx != -1]
-        # Bottom
-        elif x == self.height()-1:
-            delta = [(dx, dy) for (dx, dy) in directions if dx != 1]
-        # Lefts
-        elif y == 0:
-            delta = [(dx, dy) for (dx, dy) in directions if dy != -1]
-        # Right
-        elif y == self.width()-1:
-            delta = [(dx, dy) for (dx, dy) in directions if dy != 1]
-
-        # General Case
-        else:
-            delta = [(dx,dy) for (dx, dy) in directions]
-
-        # Return Values
+    
         ret = list()
-        for (dx, dy) in delta:
-            ret.append(self.__array[x+dx][y+dy])
+        for (dx, dy) in directions:
+            if x + dx < 0 or x + dx > self.height()-1:
+                ret.append(None)
+            elif y + dy < 0 or y + dy > self.width()-1:
+                ret.appends(None)
+            else:
+                ret.append(self.__array[x+dx][y+dy])
+
         return ret
 
-        def direction_find(index, direction):
-            '''Given an index and a direction, return the next letter in that
-            direction.
+    def direction_find(self, index, direction, leaps = 1):
+        '''Given an index and a direction, return the next letter in that
+        direction.
 
-            Args:
-                index: the index of a letter
-                direction: an x,y unit direction tuple
+        Args:
+            index: the index of a letter
+            direction: an x,y unit direction tuple
 
-            Returns:
-                The next character in that direction
-            '''
-            x,y = index
-            dx,dy = direction
-            return self.__array[x+dx][y+dy]
+        Returns:
+            The next character in that direction
+        '''
+        x,y = index
+        dx,dy = direction
+        dx = dx * leaps
+        dy = dy * leaps
+        if x + dx < 0 or x + dx > self.height()-1:
+            return False
+        if y + dy < 0 or y + dy > self.width()-1:
+            return False
+        return self.__array[x+dx][y+dy]
