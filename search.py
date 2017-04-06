@@ -105,17 +105,14 @@ def find_words(dictionary, array):
         wordlist = dictionary[char]
         # find letter index --> neighbour relation for all instances of a character once
         position_to_neighbours = indexToNeighbours(char, array)
-        print("position_to_neighbours", position_to_neighbours)
         # for each word, calculate the possible starts and directions depending
         # upon the first two letters of the word
         print(wordlist)
         for word in wordlist:
             queue = list()
-            print("word:", word)
             # for each x,y index in position_to_neighbours, check if the second letter in
             # the word is in the neighbours of the instance of the first word
             for pos, nbrs in position_to_neighbours.items():
-                print("index {}, nbrs {}, word[1] {}".format(pos, nbrs, word[1]))
                 if word[1] not in nbrs:
                     continue
                 else:
@@ -133,14 +130,10 @@ def find_words(dictionary, array):
             letter = 2
             added_back = 0
             while len(queue) > 1:
-                print("letter index", letter)
                 f = queue.pop(0)
-                print("f.index", f.index)
                 # index, direction, length = foundword from queue set
-                print("direction", f.direction)
                 next_letter = array.direction_find(f.index, f.direction, letter)
                 if not next_letter:
-                    print("GET OUTTA HERE")
                     if added_back == len(queue):
                         added_back = 0
                         letter += 1
@@ -148,8 +141,6 @@ def find_words(dictionary, array):
                 if word[letter] == next_letter:
                     queue.append(f)
                     added_back += 1
-                print("len(queue)",len(queue))
-                print("added_back", added_back)
                 if added_back == len(queue):
                     added_back = 0
                     letter += 1
