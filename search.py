@@ -1,5 +1,6 @@
 from chararray import CharArray
 from foundwords import FoundWord
+import re
 
 wordlist = dict()
 
@@ -13,13 +14,23 @@ directions = {0: (-1,-1),
               7: (1,1)}
 
 
+def check_array(C):
+    total = 0
+    for i in range(C.height()):
+        total += len(C[i])
+    if total/len(C[0]) != C.height():
+        print("PROBLEM IN ARRAY")
+
+
 def arrayfromfile(filename):
     '''Initializes a CharArray from a text file representation of
     a word search array.
 
     Args:
-        filename: string of the filename that neeads to be read
+        filename: string of the filename that needs to be read
 
+    Returns:
+        CharArray type built from a txt file
     Raises:
         RuntimeError: if the strings of character in the file to be
         read aren't all the same length. Most likely cause is the OCR
@@ -29,13 +40,23 @@ def arrayfromfile(filename):
     errors in the UI?
     '''
     C = CharArray()
-
+    problems = list()
     with open(filename) as f:
-        rows = f.readlines()
+        rows = [line.upper().strip() for line in f.readlines()]
+        i = 0
+        j = 0
         for line in rows:
-            C.append(list(line.strip()))
+            C.append(list())
+            for char in line:
+                if char.isalpha():
+                    C[i].extend(char)
+                else:
+                    problems += (i,j)
+                j += 1
+            i += 1
+            j = 0
 
-    return C
+    return C, problems
 
 
 def dictionaryfromfile(filename):
@@ -54,9 +75,9 @@ def dictionaryfromfile(filename):
         for line in rows:
             row_list = list()
             if "," in line:
-                row_list = line.strip().split(",")
+                row_list = line.strip(',').upper().split()
             else:
-                row_list = line.strip().split()
+                row_list = line.strip().upper().split()
             for token in row_list:
                 if token[0] not in wordlist:
                     wordlist[token[0]] = list()
@@ -100,22 +121,19 @@ def find_words(dictionary, array):
         A set of FoundWords.
     '''
     found = set()
-    print(dictionary)
+    # print(dictionary)
     for char in dictionary:
         wordlist = dictionary[char]
         # find letter index --> neighbour relation for all instances of a character once
         position_to_neighbours = indexToNeighbours(char, array)
-        print("position_to_neighbours", position_to_neighbours)
         # for each word, calculate the possible starts and directions depending
         # upon the first two letters of the word
-        print(wordlist)
+        # print(wordlist)
         for word in wordlist:
             queue = list()
-            print("word:", word)
             # for each x,y index in position_to_neighbours, check if the second letter in
             # the word is in the neighbours of the instance of the first word
             for pos, nbrs in position_to_neighbours.items():
-                print("index {}, nbrs {}, word[1] {}".format(pos, nbrs, word[1]))
                 if word[1] not in nbrs:
                     continue
                 else:
@@ -133,14 +151,10 @@ def find_words(dictionary, array):
             letter = 2
             added_back = 0
             while len(queue) > 1:
-                print("letter index", letter)
                 f = queue.pop(0)
-                print("f.index", f.index)
                 # index, direction, length = foundword from queue set
-                print("direction", f.direction)
                 next_letter = array.direction_find(f.index, f.direction, letter)
                 if not next_letter:
-                    print("GET OUTTA HERE")
                     if added_back == len(queue):
                         added_back = 0
                         letter += 1
@@ -148,32 +162,36 @@ def find_words(dictionary, array):
                 if word[letter] == next_letter:
                     queue.append(f)
                     added_back += 1
-                print("len(queue)",len(queue))
-                print("added_back", added_back)
                 if added_back == len(queue):
                     added_back = 0
                     letter += 1
-            f = queue.pop()
-            found.add(f)
+            if not queue:
+                print("WORD NOT IN ARRAY- SHIT!")
+            else:
+                f = queue.pop()
+                found.add(f)
 
             # @TODO: Handle Fucked up word searches
     return found
 
 if __name__ == "__main__":
-    C = arrayfromfile("wordsearch1.txt")
-    print(C[0])
+    C, problems = arrayfromfile("TestCases/wordsearch2.txt")
+    # print(C[0])
+    print(problems)
+    for i in range(C.height()):
+        print(C[i])
 
-    wordlist= dictionaryfromfile("wordsearch1words.txt")
-    print(wordlist)
+    wordlist = dictionaryfromfile("TestCases/wordsearch2words.txt")
+    # print(wordlist)
 
-    for char in wordlist:
-        print(indexToNeighbours(char, C))
+    # for char in wordlist:
+    #     print(indexToNeighbours(char, C))
 
     found = find_words(wordlist, C)
-    print(found)
+    # print(found)
 
-    for f in found:
-        print(f.index, f.direction, f.length)
+    # for f in found:
+    #     print("index {}, direction {}, length {}".format(f.index, f.direction, f.length))
 
 
     # print("X max", a.height())
