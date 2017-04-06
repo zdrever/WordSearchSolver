@@ -100,14 +100,12 @@ def find_words(dictionary, array):
         A set of FoundWords.
     '''
     found = set()
-    print(dictionary)
     for char in dictionary:
         wordlist = dictionary[char]
         # find letter index --> neighbour relation for all instances of a character once
         position_to_neighbours = indexToNeighbours(char, array)
         # for each word, calculate the possible starts and directions depending
         # upon the first two letters of the word
-        print(wordlist)
         for word in wordlist:
             queue = list()
             # for each x,y index in position_to_neighbours, check if the second letter in
@@ -151,17 +149,16 @@ def find_words(dictionary, array):
     return found
 
 if __name__ == "__main__":
-    C = arrayfromfile("wordsearch1.txt")
-    print(C[0])
+    C = arrayfromfile("TestCases/wordsearch1.txt")
 
-    wordlist= dictionaryfromfile("wordsearch1words.txt")
-    print(wordlist)
+    wordlist= dictionaryfromfile("TestCases/wordsearch1words.txt")
+    # print(wordlist)
 
     for char in wordlist:
-        print(indexToNeighbours(char, C))
+        # print(indexToNeighbours(char, C))
 
     found = find_words(wordlist, C)
-    print(found)
+    # print(found)
 
     for f in found:
         print(f.index, f.direction, f.length)
