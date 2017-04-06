@@ -14,9 +14,6 @@ class CharArray:
             returns the maximum index of the rows
         width:
             returns the maxmimus index of the columns
-        readfile:
-            takes a text representation of the array
-            and fills the already initialized CharArray
         neighbours:
             takes a position tuple and returns all the
             characters in the immediate vicinity of
@@ -26,8 +23,13 @@ class CharArray:
     def __init__(self):
         self.__array = list()
 
+    directions = [(-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1)]
+
     def __getitem__(self, index):
         return self.__array[index]
+
+    def append(self, i):
+        return self.__array.append(i)
 
     def height(self):
         '''Returns the height of the array'''
@@ -36,26 +38,6 @@ class CharArray:
     def width(self):
         '''Returns the width of the array'''
         return len(self.__array[0])
-
-    def arrayfromfile(self, filename):
-        '''Initializes a CharArray from a text file representation of
-        a word search array.
-
-        Args:
-            filename: string of the filename that neeads to be read
-
-        Raises:
-            RuntimeError: if the strings of character in the file to be
-            read aren't all the same length. Most likely cause is the OCR
-            didn't work on the photo of the array
-
-        @TODO: Implement Error handling. Is it possible to handle size of row
-        errors in the UI?
-        '''
-        with open(filename) as f:
-            rows = f.readlines()
-            for line in rows:
-                self.__array.append(list(line.strip()))
 
     def neighbours(self, p):
         '''Finds the neighbours of the character in position p.
@@ -69,7 +51,7 @@ class CharArray:
             position p. Ordering is left to right, top to bottom. Positions that
             are set to None are not on the array.
         '''
-        directions = [(-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1)]
+        directions = self.directions
         x, y = p
 
         ret = list()

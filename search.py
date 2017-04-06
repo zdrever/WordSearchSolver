@@ -12,6 +12,32 @@ directions = {0: (-1,-1),
               6: (1,0),
               7: (1,1)}
 
+
+def arrayfromfile(filename):
+    '''Initializes a CharArray from a text file representation of
+    a word search array.
+
+    Args:
+        filename: string of the filename that neeads to be read
+
+    Raises:
+        RuntimeError: if the strings of character in the file to be
+        read aren't all the same length. Most likely cause is the OCR
+        didn't work on the photo of the array
+
+    @TODO: Implement Error handling. Is it possible to handle size of row
+    errors in the UI?
+    '''
+    C = CharArray()
+
+    with open(filename) as f:
+        rows = f.readlines()
+        for line in rows:
+            C.append(list(line.strip()))
+
+    return C
+
+
 def dictionaryfromfile(filename):
     '''Fill the word list with words read from a text file
 
@@ -134,20 +160,20 @@ def find_words(dictionary, array):
     return found
 
 if __name__ == "__main__":
-    a = CharArray()
-    a.arrayfromfile("wordsearch1.txt")
-    print(a[0])
+    C = arrayfromfile("wordsearch1.txt")
+    print(C[0])
 
     wordlist= dictionaryfromfile("wordsearch1words.txt")
     print(wordlist)
 
     for char in wordlist:
-        print(indexToNeighbours(char, a))
+        print(indexToNeighbours(char, C))
 
-    found = find_words(wordlist, a)
+    found = find_words(wordlist, C)
     print(found)
+
     for f in found:
-        print(f.index, f.direction)
+        print(f.index, f.direction, f.length)
 
 
     # print("X max", a.height())
