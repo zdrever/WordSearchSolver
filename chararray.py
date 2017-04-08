@@ -2,11 +2,11 @@ class CharArray:
     '''Type to represent word search array of characers.
 
     Attributes:
-        __array:
+        array:
             2D array (list of lists)
-        __height:
+        height:
             max index of rows
-        __width:
+        width:
             max index of columns
 
     Methods:
@@ -21,23 +21,26 @@ class CharArray:
     '''
 
     def __init__(self):
-        self.__array = list()
+        self.array = list()
 
+    # list of directions. Index corresponds to the direction that
+    # the tuple points to. See neighbours function for its use.
     directions = [(-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1)]
 
     def __getitem__(self, index):
-        return self.__array[index]
+        return self.array[index]
 
-    def append(self, i):
-        return self.__array.append(i)
+    def append(self, v):
+        '''Allows for the CharArry to be appended to using the self.append method'''
+        return self.array.append(v)
 
     def height(self):
         '''Returns the height of the array'''
-        return len(self.__array)
+        return len(self.array)
 
     def width(self):
         '''Returns the width of the array'''
-        return len(self.__array[0])
+        return len(self.array[0])
 
     def neighbours(self, p):
         '''Finds the neighbours of the character in position p.

@@ -14,10 +14,29 @@ class FoundWord:
         self.length = l
 
     def setindex(self, i):
-         self.index = i
+        '''
+        Args:
+            i: integer tuple (row, column of the starting index
+        Returns:
+            Nothing
+        '''
+        self.index = i
 
     def setdirection(self, d):
+        '''
+        Args:
+            d: a direction unit vector tuple (row, column) that describes the
+            direction that the word runs in the CharArray.
+        Returns:
+            Nothing
+        '''
         self.direction = d
 
     def setlength(self, l):
+        '''
+        Args:
+            l: The length of the string that defines the word.
+        Retuns:
+            Nothing
+        '''
         self.length = l
