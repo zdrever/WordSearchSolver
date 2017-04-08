@@ -2,8 +2,8 @@ import UI
 from tkinter import *
 from tkinter import filedialog
 from chararray import CharArray
-from foundword import FoundWord
-import findwords 
+from foundwords import FoundWord
+import search
 
 # print("hello1")
 # a = 0
@@ -35,6 +35,7 @@ if __name__ == "__main__":
     # continue_button.place(relx=0.5, rely=0.6, anchor = "center")
     from UI import openfile
     wordarray, heightofarray, widthofarray = openfile()
+    print(wordarray, heightofarray, widthofarray)
     UI.printtextfiletoUI(wordarray, heightofarray, widthofarray, frame)
     #UI.highlightsolution((15,8), (1,0), 7, frame)
     # print("hello8")

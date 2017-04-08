@@ -2,7 +2,7 @@ from tkinter import *
 from tkinter import filedialog
 from chararray import CharArray
 from foundwords import FoundWord
-import findwords
+import search
 
 def startscreen(root, frame):
 
@@ -30,8 +30,7 @@ def openfile():
 
    filetoopen = filedialog.askopenfilename()
    print(filetoopen)
-   wordarray = CharArray()
-   wordarray.readfile(filetoopen)
+   wordarray = search.arrayfromfile(filetoopen)
    heightofarray = wordarray.height()
    widthofarray = wordarray.width()
 

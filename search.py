@@ -154,7 +154,7 @@ if __name__ == "__main__":
     wordlist= dictionaryfromfile("TestCases/wordsearch1words.txt")
     # print(wordlist)
 
-    for char in wordlist:
+    # for char in wordlist:
         # print(indexToNeighbours(char, C))
 
     found = find_words(wordlist, C)
