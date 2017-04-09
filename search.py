@@ -34,6 +34,11 @@ def arrayfromfile(filename):
     with open(filename) as f:
         rows = f.readlines()
         for line in rows:
+            if '0' in line:
+                line = line.replace('0', 'O')
+            if ' ' in line:
+                line = line.replace(' ', '')
+
             C.append(list(line.strip()))
 
     return C
@@ -46,11 +51,13 @@ def dictionaryfromfile(filename):
         filename: string of the filename that needs to be read
 
     Returns:
-        dict that maps a letter of words to a list of words that
+        wordlist: dict that maps a letter of words to a list of words that
         start with that letter
+        count: the number of words that are in the dictionary
     '''
     print("Building word dictionary from file in memory")
     wordlist = dict()
+    count = 0
     with open(filename) as f:
         rows = f.readlines()
         for line in rows:
@@ -67,8 +74,9 @@ def dictionaryfromfile(filename):
                     wordlist[token[0]].append(token)
                 else:
                     wordlist[token[0]].append(token)
+                count += 1
 
-    return wordlist
+    return wordlist, count
 
 
 def indexToNeighbours(letter, array):
@@ -132,6 +140,7 @@ def find_words(dictionary, array):
     found = set()
     for char in dictionary:
         # Take the list of words that start with the character 'char'
+        print(dictionary)
         wordlist = dictionary[char]
         print(wordlist)
         # find letter index --> neighbour relation for all instances of a character once
@@ -175,6 +184,10 @@ def find_words(dictionary, array):
                         letter += 1
                     continue
                 # If it is add it back
+                if letter == f.length:
+                    for f in queue:
+                        found.add(f)
+                    break
                 if word[letter] == next_letter:
                     queue.append(f)
                     added_back += 1
@@ -191,15 +204,15 @@ def find_words(dictionary, array):
 
             # TODO: Handle Fucked up word searches. What happens if there are two
             # instances of a word, or there is no instance of the word?
-            # TODO: Segment it into multiple functions (QUEUE POPPING CAN BE ITS
-            # OWN FUNCTION)
+            # TODO: Segment it into multiple functions (Queue popping could
+            # be its own function)
 
     return found
 
 if __name__ == "__main__":
-    C = arrayfromfile("TestCases/wordsearch2.txt")
+    C = arrayfromfile("TestCases/wordsearch3.txt")
 
-    wordlist= dictionaryfromfile("TestCases/wordsearch2words.txt")
+    wordlist= dictionaryfromfile("TestCases/wordsearch3words.txt")
     # print(wordlist)
 
     # for char in wordlist:
