@@ -58,7 +58,7 @@ def openfile(frame):
     #checking if wordbank file is .txt
     if wordbankfile[-3:] == 'txt':
         print("hi2")
-        dicttofind = search.dictionaryfromfile(wordbankfile)
+        dicttofind,wordcount = search.dictionaryfromfile(wordbankfile)
         foundwords = search.find_words(dicttofind, wordarray)
 
     #checking if wordbank file is .jpg, jpeg or png, TODO run image reader then create foundwords here
@@ -74,20 +74,23 @@ def openfile(frame):
         frame.destroy()
         frame = Frame(width=1500, height=950, bg="", colormap="new")
         frame.pack()
-        printtextfiletoUI(wordarray, heightofarray, widthofarray, frame, foundwords)
+        printtextfiletoUI(wordarray, heightofarray, widthofarray, frame, foundwords, dicttofind, wordcount)
 
 
-def printtextfiletoUI(wordarray, heightofarray, widthofarray, frame, foundwords):
+def printtextfiletoUI(wordarray, heightofarray, widthofarray, frame, foundwords, dicttofind, wordcount):
 
-    #using letters for variables for ease of calculations s
+    #using letters for variables for ease of calculations
     a = widthofarray
     b = heightofarray
+    c = wordcount
 
-
+    wordstoprint = set()
+    for z in dicttofind:
+        dicttofind[z] = wordstoprint
     #creating grid upon which letters are placed
     textgrid = Canvas(master = frame, width = a * 40, height = b * 40, bg = "white")
     textgrid.pack()
-    textgrid.place(relx = 0.5, rely = 0.5, anchor = "center")
+    textgrid.place(relx = 0.4, rely = 0.5, anchor = "center")
 
     #creating the black lines of the grid
     for i in range(a):
@@ -95,6 +98,13 @@ def printtextfiletoUI(wordarray, heightofarray, widthofarray, frame, foundwords)
         textgrid.create_line(0, i*40 , a*40, i*40 )
         for j in range(a):
             textgrid.create_text(j*40 + 20, i*40 + 20, text = wordarray[i][j], font = 16)
+
+    wordbank = Canvas(master = frame, width = 500, height = 800, bg = "white")
+    wordbank.pack()
+    wordbank.place(relx = 0.8, rely = 0.5, anchor = "center")
+    if c < 20:
+        for k in range(c):
+            wordbank.create_text(250, c*40 + 20, text = wordstoprint[k], font = 16)
 
     #creating "solve" button, once hit continue to highlightsolution()
     continuetosolver = Button(master = frame, text = "Solve", font = 16, command = lambda : highlightsolution(wordarray,foundwords, textgrid))
