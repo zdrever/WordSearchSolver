@@ -3,7 +3,6 @@ from tkinter import filedialog
 from chararray import CharArray
 from foundwords import FoundWord
 import search
-import ocrAPI
 
 def startscreen(root, frame):
 
@@ -40,6 +39,8 @@ def continuetopage2(root, frame):
 
 def openfile(frame):
 
+    #TODO: what do we do if user hits cancel??
+
 
     #user picks the 2 files to use, first is array, second is word bank
     wordarrayfile = filedialog.askopenfilename()
@@ -74,7 +75,7 @@ def openfile(frame):
         # ocrAPI.text_wordlist_from_image(wordbankfile)
         # dicttofind, wordcount = serach.dictionaryfromfile('words.txt')
         # foundwords = search.find_words(dicttofind, wordarray)
-
+        
     #checking if both files have been selected, once both files have been selected move to (printtextfiletoUI)
     a = 0
     if wordbankfile != '':
@@ -117,14 +118,39 @@ def printtextfiletoUI(wordarray, heightofarray, widthofarray, frame, foundwords,
             textgrid.create_text(j*40 + 20, i*40 + 20, text = wordarray[i][j], font = 16)
 
 
-    #creating the box to put the word bank in
-    wordbank = Canvas(master = frame, width = d*14, height = c*20 , bg = "white")
-    wordbank.pack()
-    wordbank.place(relx = 0.8, rely = 0.5, anchor = "center")
+    # #creating the box to put the word bank in
+    # wordbank = Canvas(master = frame, width = d*14, height = c*20 , bg = "white")
+    # wordbank.pack()
+    # wordbank.place(relx = 0.8, rely = 0.5, anchor = "center")
 
-    #printing the words from the wordbank
-    for k in range(c):
-        wordbank.create_text(10, k*25 + 20, text = wordstoprint[k], font = 16, anchor = "w")
+    #creating a wordbank the user can see, if less than 35 words we make one single list
+    if c < 35:
+
+        #making the background for the wordbank
+        wordbank = Canvas(master = frame, width = d*14, height = c*20 , bg = "white")
+        wordbank.pack()
+        wordbank.place(relx = 0.8, rely = 0.5, anchor = "center")
+
+        #printing the words for the wordbank
+        for i in range(c):
+            wordbank.create_text(10, i*25 + 20, text = wordstoprint[i], font = 16, anchor = "w")
+
+    #creating a wordwordbank the user can see, if greater than 35, we split the list into two
+    else:
+
+        #making the background
+        wordbank = Canvas(master = frame, width = 2*d*14 + 10, height = c*13, bg = "white")
+        wordbank.pack()
+        wordbank.place(relx = 0.8, rely = 0.5, anchor = "center")
+
+        #printing the words
+        for i in range(int(c/2)):
+            wordbank.create_text(10, i*25 + 20, text = wordstoprint[i], font = 16, anchor = "w")
+        for i in range(int((c/2)),c):
+            wordbank.create_text(10+d*14, i*25 + 20 -int(c/2)*25, text = wordstoprint[i], font = 16, anchor = "w")
+
+    #TODO: make a 3rd case for c > 70?
+
 
     #creating "solve" button, once hit continue to highlightsolution()
     continuetosolver = Button(master = frame, text = "Solve", font = 16, command = lambda : highlightsolution(wordarray,foundwords, textgrid))
@@ -132,6 +158,9 @@ def printtextfiletoUI(wordarray, heightofarray, widthofarray, frame, foundwords,
 
 
 def highlightsolution(wordarray, FoundWord, textgrid):
+
+    # TODO: Make a reset button in here
+
 
     #defining some variables for later calculation use
     for f in FoundWord:
