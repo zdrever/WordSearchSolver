@@ -1,6 +1,6 @@
 import requests
 
-def txt_array_from_jpg(jpeg):
+def text_array_from_image(jpeg):
     print("Get array text")
     writefile = "array.txt"
     key = '6085b04c132cb3bf1b3cfd998e901d6e' # GET KEY
@@ -35,7 +35,7 @@ def txt_array_from_jpg(jpeg):
 
 
 
-def txt_words_from_jpg(jpeg):
+def text_wordlist_from_image(jpeg):
     print("Get words text")
     writefile = "words.txt"
     key = '6085b04c132cb3bf1b3cfd998e901d6e'

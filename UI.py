@@ -3,6 +3,7 @@ from tkinter import filedialog
 from chararray import CharArray
 from foundwords import FoundWord
 import search
+import ocrAPI
 
 def startscreen(root, frame):
 
@@ -54,16 +55,25 @@ def openfile(frame):
     #checking if arrary file is .jpg, .jpeg or .png  ##TODO run image reader then find wordarrary, height, width
     elif (wordarrayfile[-3:] == 'jpg' or 'png') or (wordarrayfile[-4:] == 'jpeg'):
         print("Getting array from image file.")
+        # write to the file array.txt the response from the API server
+        # ocrAPI.text_array_from_image(wordarrayfile)
+        # wordarray = search.arrayfromfile('array.txt')
+        # heightofarray = wordarray.height()
+        # widthofarray = wordarray.width()
 
     #checking if wordbank file is .txt
     if wordbankfile[-3:] == 'txt':
         print("Getting word list from .txt file.")
-        dicttofind,wordcount = search.dictionaryfromfile(wordbankfile)
+        dicttofind, wordcount = search.dictionaryfromfile(wordbankfile)
         foundwords = search.find_words(dicttofind, wordarray)
 
     #checking if wordbank file is .jpg, jpeg or png, TODO run image reader then create foundwords here
     elif (wordbankfile[-3:] == 'jpg' or 'png') or (wordbankfile[-4:] == 'jpeg'):
         print("Getting word list from image file.")
+        # write to the file words.txt the response from the API server
+        # ocrAPI.text_wordlist_from_image(wordbankfile)
+        # dicttofind, wordcount = serach.dictionaryfromfile('words.txt')
+        # foundwords = search.find_words(dicttofind, wordarray)
 
     #checking if both files have been selected, once both files have been selected move to (printtextfiletoUI)
     a = 0
