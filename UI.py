@@ -84,13 +84,16 @@ def printtextfiletoUI(wordarray, heightofarray, widthofarray, frame, foundwords,
     b = heightofarray
     c = wordcount
 
+    #creating a list so I can iterate through it while printing the word bank
     wordstoprint = list()
     for char in dicttofind:
         for word in dicttofind[char]:
             wordstoprint.append(word)
-
     wordstoprint = sorted(wordstoprint)
+
+    #finding the max word length for use in calculations
     d = max(len(w) for w in wordstoprint)
+
 
     #creating grid upon which letters are placed
     textgrid = Canvas(master = frame, width = a * 40, height = b * 40, bg = "white")
@@ -104,12 +107,15 @@ def printtextfiletoUI(wordarray, heightofarray, widthofarray, frame, foundwords,
         for j in range(a):
             textgrid.create_text(j*40 + 20, i*40 + 20, text = wordarray[i][j], font = 16)
 
-    wordbank = Canvas(master = frame, width = 500, height = 800, bg = "white")
+
+    #creating the box to put the word bank in
+    wordbank = Canvas(master = frame, width = d*14, height = c*20 , bg = "white")
     wordbank.pack()
     wordbank.place(relx = 0.8, rely = 0.5, anchor = "center")
-    if c < 20:
-        for k in range(c):
-            wordbank.create_text(250, k*25 + 20, text = wordstoprint[k], font = 16)
+
+    #printing the words from the wordbank
+    for k in range(c):
+        wordbank.create_text(10, k*25 + 20, text = wordstoprint[k], font = 16, anchor = "w")
 
     #creating "solve" button, once hit continue to highlightsolution()
     continuetosolver = Button(master = frame, text = "Solve", font = 16, command = lambda : highlightsolution(wordarray,foundwords, textgrid))
