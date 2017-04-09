@@ -46,25 +46,24 @@ def openfile(frame):
 
     #checking if arrary file is .txt, runs functions directly if so
     if wordarrayfile[-3:] == 'txt':
-        print("hi0")
+        print("Getting array from .txt file.")
         wordarray = search.arrayfromfile(wordarrayfile)
         heightofarray = wordarray.height()
         widthofarray = wordarray.width()
 
     #checking if arrary file is .jpg, .jpeg or .png  ##TODO run image reader then find wordarrary, height, width
     elif (wordarrayfile[-3:] == 'jpg' or 'png') or (wordarrayfile[-4:] == 'jpeg'):
-        print("hi1")
+        print("Getting array from image file.")
 
     #checking if wordbank file is .txt
     if wordbankfile[-3:] == 'txt':
-        print("hi2")
+        print("Getting word list from .txt file.")
         dicttofind,wordcount = search.dictionaryfromfile(wordbankfile)
         foundwords = search.find_words(dicttofind, wordarray)
 
     #checking if wordbank file is .jpg, jpeg or png, TODO run image reader then create foundwords here
     elif (wordbankfile[-3:] == 'jpg' or 'png') or (wordbankfile[-4:] == 'jpeg'):
-        # TODO run image reader
-        print("hi3")
+        print("Getting word list from image file.")
 
     #checking if both files have been selected, once both files have been selected move to (printtextfiletoUI)
     a = 0

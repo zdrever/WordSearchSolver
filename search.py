@@ -63,7 +63,6 @@ def dictionaryfromfile(filename):
         for line in rows:
             row_list = list()
             if ',' in line:
-                print("Remove comma's")
                 row_list = [line.strip() for line in line.split(',')]
             else:
                 row_list = line.strip().split()
@@ -140,9 +139,7 @@ def find_words(dictionary, array):
     found = set()
     for char in dictionary:
         # Take the list of words that start with the character 'char'
-        print(dictionary)
         wordlist = dictionary[char]
-        print(wordlist)
         # find letter index --> neighbour relation for all instances of a character once
         position_to_neighbours = indexToNeighbours(char, array)
         # for each word, calculate the possible starts and directions depending
@@ -223,15 +220,3 @@ if __name__ == "__main__":
 
     for f in found:
         print(f.index, f.direction, f.length)
-
-
-    # print("X max", a.height())
-    # print("Y max",len(a[0]))
-    # print("TOP LEFT")
-    # print(a.neighbours((0,0)))
-    # print("TOP RIGHT")
-    # print(a.neighbours((0,14)))
-    # print("BOTTOM LEFT")
-    # print(a.neighbours((14,0)))
-    # print("BOTTOM RIGHT")
-    # print(a.neighbours((14,14)))
