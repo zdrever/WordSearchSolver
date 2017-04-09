@@ -28,6 +28,7 @@ def arrayfromfile(filename):
     @TODO: Implement Error handling. Is it possible to handle size of row
     errors in the UI?
     '''
+    print("Building array in memory from text file")
     C = CharArray()
 
     with open(filename) as f:
@@ -48,16 +49,19 @@ def dictionaryfromfile(filename):
         dict that maps a letter of words to a list of words that
         start with that letter
     '''
+    print("Building word dictionary from file in memory")
     wordlist = dict()
     with open(filename) as f:
         rows = f.readlines()
         for line in rows:
             row_list = list()
-            if "," in line:
-                row_list = line.strip().split(",")
+            if ',' in line:
+                print("Remove comma's")
+                row_list = [line.strip() for line in line.split(',')]
             else:
                 row_list = line.strip().split()
             for token in row_list:
+                token = token.upper()
                 if token[0] not in wordlist:
                     wordlist[token[0]] = list()
                     wordlist[token[0]].append(token)
@@ -124,10 +128,12 @@ def find_words(dictionary, array):
     Returns:
         A set of FoundWords.
     '''
+    print("Find Words")
     found = set()
     for char in dictionary:
         # Take the list of words that start with the character 'char'
         wordlist = dictionary[char]
+        print(wordlist)
         # find letter index --> neighbour relation for all instances of a character once
         position_to_neighbours = indexToNeighbours(char, array)
         # for each word, calculate the possible starts and directions depending
@@ -177,8 +183,11 @@ def find_words(dictionary, array):
                     added_back = 0
                     letter += 1
 
-            f = queue.pop()
-            found.add(f)
+            if not queue:
+                print("Word not found:", word)
+            else:
+                f = queue.pop()
+                found.add(f)
 
             # TODO: Handle Fucked up word searches. What happens if there are two
             # instances of a word, or there is no instance of the word?
@@ -188,9 +197,9 @@ def find_words(dictionary, array):
     return found
 
 if __name__ == "__main__":
-    C = arrayfromfile("TestCases/wordsearch1.txt")
+    C = arrayfromfile("TestCases/wordsearch2.txt")
 
-    wordlist= dictionaryfromfile("TestCases/wordsearch1words.txt")
+    wordlist= dictionaryfromfile("TestCases/wordsearch2words.txt")
     # print(wordlist)
 
     # for char in wordlist:

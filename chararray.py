@@ -47,7 +47,7 @@ class CharArray:
 
         Args:
             p: position tuple (row, column) defining a position
-            of a character in __array
+            of a character in array
 
         Returns:
             list: all characters that immediately surround the character in
@@ -64,7 +64,7 @@ class CharArray:
             elif y + dy < 0 or y + dy > self.width()-1:
                 ret.append(None)
             else:
-                ret.append(self.__array[x+dx][y+dy])
+                ret.append(self.array[x+dx][y+dy])
 
         return ret
 
@@ -89,4 +89,4 @@ class CharArray:
             return False
         if y + dy < 0 or y + dy > self.width()-1:
             return False
-        return self.__array[x+dx][y+dy]
+        return self.array[x+dx][y+dy]
