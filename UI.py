@@ -49,19 +49,18 @@ def continuetopage2(root, frame):
 
 def openfile(root,frame):
 
-    #TODO: what do we do if user hits cancel??
-
+    #Declaring which file types are allowed
+    allowedfiletypes = [ ('Allowed File Types', '*.txt ; *.png ; *.jpeg ; *.jpg'), ('All File Types', '*') ]
 
     #user picks the 2 files to use, first is array, second is word bank
     #we use while loops to ensure the user has picked a file. If cancel is hit, the program will ask for the file again
-
     wordarrayfile = ''
     while wordarrayfile == '':
-        wordarrayfile = filedialog.askopenfilename()
+        wordarrayfile = filedialog.askopenfilename(title = "Choose your array file", filetypes = allowedfiletypes)
 
     wordbankfile = ''
     while wordbankfile == '':
-        wordbankfile = filedialog.askopenfilename()
+        wordbankfile = filedialog.askopenfilename(title = "Choose your word bank file")
 
     #checking if arrary file is .txt, runs functions directly if so
     if wordarrayfile[-3:] == 'txt':
@@ -70,7 +69,7 @@ def openfile(root,frame):
         heightofarray = wordarray.height()
         widthofarray = wordarray.width()
 
-    #checking if arrary file is .jpg, .jpeg or .png  ##TODO run image reader then find wordarrary, height, width
+    #checking if arrary file is .jpg, .jpeg or .png
     elif (wordarrayfile[-3:] == 'jpg' or 'png') or (wordarrayfile[-4:] == 'jpeg'):
         print("Getting array from image file.")
         print(wordarrayfile)
@@ -86,7 +85,7 @@ def openfile(root,frame):
         dicttofind, wordcount = search.dictionaryfromfile(wordbankfile)
         foundwords = search.find_words(dicttofind, wordarray)
 
-    #checking if wordbank file is .jpg, jpeg or png, TODO run image reader then create foundwords here
+    #checking if wordbank file is .jpg, jpeg or png
     elif (wordbankfile[-3:] == 'jpg' or 'png') or (wordbankfile[-4:] == 'jpeg'):
         print("Getting word list from image file.")
         print(wordbankfile)
@@ -141,7 +140,7 @@ def printtextfiletoUI(wordarray, heightofarray, widthofarray, root, frame, found
     if c < 35:
 
         #making the background for the wordbank
-        wordbank = Canvas(master = frame, width = d*14 + 20, height = c*20 + 20 , bg = "white")
+        wordbank = Canvas(master = frame, width = d*14 + 20, height = c*20 + 25 , bg = "white")
         wordbank.pack()
         wordbank.place(relx = 0.8, rely = 0.5, anchor = "center")
 
@@ -150,6 +149,7 @@ def printtextfiletoUI(wordarray, heightofarray, widthofarray, root, frame, found
             wordbank.create_text(5, i*25 + 20, text = wordstoprint[i], font = 16, anchor = "w")
 
     #creating a wordwordbank the user can see, if greater than 35, we split the list into two
+    #TODO: Make sure it works for odd instnces of c
     else:
 
         #making the background
@@ -161,7 +161,7 @@ def printtextfiletoUI(wordarray, heightofarray, widthofarray, root, frame, found
         for i in range(int(c/2)):
             wordbank.create_text(10, i*25 + 20, text = wordstoprint[i], font = 16, anchor = "w")
         for i in range(int((c/2)),c):
-            wordbank.create_text(10+d*14, i*25 + 20 -int(c/2)*25, text = wordstoprint[i], font = 16, anchor = "w")
+            wordbank.create_text(15+d*14, i*25 + 20 -int(c/2)*25, text = wordstoprint[i], font = 16, anchor = "w")
 
     #TODO: make a 3rd case for c > 70?
 
