@@ -5,6 +5,17 @@ from foundwords import FoundWord
 import search
 import ocrAPI
 
+
+def resetprogram(root, frame):
+
+    #clears frame and recreates a blank one
+    frame.destroy()
+    frame = Frame(width=1500, height=950, bg="", colormap="new")
+    frame.pack()
+
+    #starts the program over
+    startscreen(root,frame)
+
 def startscreen(root, frame):
 
     #prints entry message
@@ -34,11 +45,11 @@ def continuetopage2(root, frame):
     secondarymessage.place(relx=0.5, rely=0.5, anchor="center")
 
     #once 'choose file' button is pressed, go to openfile()
-    file_button = Button(master = frame, text = "Choose File", font = 16, command = lambda : openfile(frame))
+    file_button = Button(master = frame, text = "Choose File", font = 16, command = lambda : openfile(root,frame))
     file_button.pack()
     file_button.place(relx=0.5, rely=0.6, anchor="center")
 
-def openfile(frame):
+def openfile(root,frame):
 
     #TODO: what do we do if user hits cancel??
 
@@ -87,10 +98,10 @@ def openfile(frame):
         frame.destroy()
         frame = Frame(width=1500, height=950, bg="", colormap="new")
         frame.pack()
-        printtextfiletoUI(wordarray, heightofarray, widthofarray, frame, foundwords, dicttofind, wordcount)
+        printtextfiletoUI(wordarray, heightofarray, widthofarray, root, frame, foundwords, dicttofind, wordcount)
 
 
-def printtextfiletoUI(wordarray, heightofarray, widthofarray, frame, foundwords, dicttofind, wordcount):
+def printtextfiletoUI(wordarray, heightofarray, widthofarray, root, frame, foundwords, dicttofind, wordcount):
 
     #using letters for variables for ease of calculations
     a = widthofarray
@@ -121,22 +132,17 @@ def printtextfiletoUI(wordarray, heightofarray, widthofarray, frame, foundwords,
             textgrid.create_text(j*40 + 20, i*40 + 20, text = wordarray[i][j], font = 16)
 
 
-    # #creating the box to put the word bank in
-    # wordbank = Canvas(master = frame, width = d*14, height = c*20 , bg = "white")
-    # wordbank.pack()
-    # wordbank.place(relx = 0.8, rely = 0.5, anchor = "center")
-
     #creating a wordbank the user can see, if less than 35 words we make one single list
     if c < 35:
 
         #making the background for the wordbank
-        wordbank = Canvas(master = frame, width = d*14, height = c*20 , bg = "white")
+        wordbank = Canvas(master = frame, width = d*14 + 20, height = c*20 + 20 , bg = "white")
         wordbank.pack()
         wordbank.place(relx = 0.8, rely = 0.5, anchor = "center")
 
         #printing the words for the wordbank
         for i in range(c):
-            wordbank.create_text(10, i*25 + 20, text = wordstoprint[i], font = 16, anchor = "w")
+            wordbank.create_text(5, i*25 + 20, text = wordstoprint[i], font = 16, anchor = "w")
 
     #creating a wordwordbank the user can see, if greater than 35, we split the list into two
     else:
@@ -156,13 +162,17 @@ def printtextfiletoUI(wordarray, heightofarray, widthofarray, frame, foundwords,
 
 
     #creating "solve" button, once hit continue to highlightsolution()
-    continuetosolver = Button(master = frame, text = "Solve", font = 16, command = lambda : highlightsolution(wordarray,foundwords, textgrid))
+    continuetosolver = Button(master = frame, text = "Solve", font = 16, command = lambda : highlightsolution(wordarray,foundwords, textgrid,root, frame))
     continuetosolver.place(relx = 0.5, rely = 0.95, anchor = "center")
 
 
-def highlightsolution(wordarray, FoundWord, textgrid):
+def highlightsolution(wordarray, FoundWord, textgrid,root, frame):
 
-    # TODO: Make a reset button in here
+
+    #Reset button - just writes on top of solve button - TODO: delete solve button
+    resetbutton = Button(master = frame, text = "Restart Program", font = 18)
+    resetbutton.place(relx = 0.5, rely = 0.95, anchor = "center")
+    resetbutton['command'] = lambda: resetprogram(root, frame)
 
 
     #defining some variables for later calculation use
