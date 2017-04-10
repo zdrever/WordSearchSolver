@@ -37,8 +37,6 @@ def continuetopage2(root, frame):
     frame = Frame(width=1500, height=950, bg="", colormap="new")
     frame.pack()
 
-    #TODO: Add button to open image editing application if photo is not already in correct format
-
     #displays prompt to choose file
     secondarymessage = Label(master = frame, text="Please press the button below to choose your file. Choose the word array file first, and the word bank file second. ", font = 16)
     secondarymessage.pack()
@@ -55,8 +53,15 @@ def openfile(root,frame):
 
 
     #user picks the 2 files to use, first is array, second is word bank
-    wordarrayfile = filedialog.askopenfilename()
-    wordbankfile = filedialog.askopenfilename()
+    #we use while loops to ensure the user has picked a file. If cancel is hit, the program will ask for the file again
+
+    wordarrayfile = ''
+    while wordarrayfile == '':
+        wordarrayfile = filedialog.askopenfilename()
+
+    wordbankfile = ''
+    while wordbankfile == '':
+        wordbankfile = filedialog.askopenfilename()
 
     #checking if arrary file is .txt, runs functions directly if so
     if wordarrayfile[-3:] == 'txt':
@@ -210,7 +215,7 @@ def highlightsolution(wordarray, FoundWord, textgrid,root, frame):
         #diagonal - up and to the right
         if (dx, dy) == (-1,1):
             for a in range(length):
-                textgrid.create_line(startingx + 15, startingy + 25, startingx + length*40 - 25, startingy - (length - 1)*40 + 25, fill = "yellow", width = 4)
+                textgrid.create_line(startingx + 15, startingy + 25, startingx + length*40 - 15, startingy - (length - 1)*40 + 15, fill = "yellow", width = 4)
             for a in range(length):
                 textgrid.create_text(startingx + 20 + a*40, startingy + 20 - a*40, text = wordarray[row - a][column + a], font = 16)
 
