@@ -38,7 +38,10 @@ def arrayfromfile(filename):
                 line = line.replace('0', 'O')
             if ' ' in line:
                 line = line.replace(' ', '')
-
+            if '!' in line:
+                line = line.replace('!', 'I')
+            if '1' in line:
+                line = line.replace('1', 'I')
             C.append(list(line.strip()))
 
     return C
@@ -207,9 +210,9 @@ def find_words(dictionary, array):
     return found
 
 if __name__ == "__main__":
-    C = arrayfromfile("TestCases/wordsearch3.txt")
+    C = arrayfromfile("TestCases/wordsearch5.txt")
 
-    wordlist= dictionaryfromfile("TestCases/wordsearch3words.txt")
+    wordlist= dictionaryfromfile("TestCases/wordsearch5words.txt")
     # print(wordlist)
 
     # for char in wordlist:

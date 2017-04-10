@@ -1,17 +1,16 @@
 import requests
 import pdb
 
-def text_array_from_image(jpeg):
+def text_array_from_image(imagefile):
     print("Get array text")
     writefile = "array.txt"
     key = '6085b04c132cb3bf1b3cfd998e901d6e' # GET KEY
 
+    POSTURL = 'http://api.newocr.com/v1/upload?key=' + key #GET API KEY BEFORE RUNNING
+
     pdb.set_trace()
 
-    POSTURL = 'http://api.newocr.com/v1/upload?key=' + key #GET API KEY BEFORE RUNNING
-    files = {jpeg: open(jpeg, 'rb')}
-
-    req = requests.post(POSTURL, files = files)
+    req = requests.post(POSTURL, name='file', files=imagefile)
     if req.status_code != 200:
         raise Exception('API call failed (POST) [{} {}]'.format(req.status_code, req.reason))
 
@@ -38,7 +37,7 @@ def text_array_from_image(jpeg):
 
 
 
-def text_wordlist_from_image(jpeg):
+def text_wordlist_from_image(imagefile):
     print("Get words text")
     writefile = "words.txt"
     key = '6085b04c132cb3bf1b3cfd998e901d6e'
@@ -46,9 +45,8 @@ def text_wordlist_from_image(jpeg):
     pdb.set_trace()
 
     POSTURL = 'http://api.newocr.com/v1/upload?key=' + key#GET API KEY BEFORE RUNNING
-    files = {jpeg: open(jpeg, 'rb')}
 
-    req = requests.post(POSTURL, files = files)
+    req = requests.post(POSTURL, name='file', files=imagefile)
     if req.status_code != 200:
         raise Exception('API call failed (POST) [{} {}]'.format(req.status_code, req.reason))
 
