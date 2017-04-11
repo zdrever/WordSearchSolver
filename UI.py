@@ -126,7 +126,6 @@ def printtextfiletoUI(wordarray, heightofarray, widthofarray, root, frame, found
     textgrid = Canvas(master = frame, width = a * 40, height = b * 40, bg = "white")
     textgrid.pack()
     textgrid.place(relx = 0.4, rely = 0.5, anchor = "center")
-
     #creating the black lines of the grid
     for i in range(a):
         textgrid.create_line(i*40, 0, i*40, a*40)
