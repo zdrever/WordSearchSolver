@@ -1,9 +1,9 @@
 import UI
 from tkinter import *
 from tkinter import filedialog
-from chararray import CharArray
-from foundwords import FoundWord
-import search
+# from chararray import CharArray
+# from foundwords import FoundWord
+# import search
 
 #TODO: don't need any of these functions above, should probably clean up and delete some
 if __name__ == "__main__":

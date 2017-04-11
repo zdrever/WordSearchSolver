@@ -122,7 +122,6 @@ def printtextfiletoUI(wordarray, heightofarray, widthofarray, root, frame, found
     #finding the max word length for use in calculations
     d = max(len(w) for w in wordstoprint)
 
-
     #creating grid upon which letters are placed
     textgrid = Canvas(master = frame, width = a * 40, height = b * 40, bg = "white")
     textgrid.pack()
@@ -149,9 +148,7 @@ def printtextfiletoUI(wordarray, heightofarray, widthofarray, root, frame, found
             wordbank.create_text(5, i*25 + 20, text = wordstoprint[i], font = 16, anchor = "w")
 
     #creating a wordwordbank the user can see, if greater than 35, we split the list into two
-    #TODO: Make sure it works for odd instnces of c
     else:
-
         #making the background
         wordbank = Canvas(master = frame, width = 2*d*14 + 10, height = c*13, bg = "white")
         wordbank.pack()
@@ -163,8 +160,6 @@ def printtextfiletoUI(wordarray, heightofarray, widthofarray, root, frame, found
         for i in range(int((c/2)),c):
             wordbank.create_text(15+d*14, i*25 + 20 -int(c/2)*25, text = wordstoprint[i], font = 16, anchor = "w")
 
-    #TODO: make a 3rd case for c > 70?
-
 
     #creating "solve" button, once hit continue to highlightsolution()
     continuetosolver = Button(master = frame, text = "Solve", font = 16, command = lambda : highlightsolution(wordarray,foundwords, textgrid,root, frame))
@@ -173,8 +168,7 @@ def printtextfiletoUI(wordarray, heightofarray, widthofarray, root, frame, found
 
 def highlightsolution(wordarray, FoundWord, textgrid,root, frame):
 
-
-    #Reset button - just writes on top of solve button - TODO: delete solve button
+    #Reset button - just writes on top of solve button
     resetbutton = Button(master = frame, text = "Restart Program", font = 18)
     resetbutton.place(relx = 0.5, rely = 0.95, anchor = "center")
     resetbutton['command'] = lambda: resetprogram(root, frame)
