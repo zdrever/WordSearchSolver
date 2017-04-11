@@ -44,8 +44,7 @@ def arrayfromfile(filename):
                 line = line.replace('1', 'I')
             if '2' in line:
                 line = line.replace('2', 'Z')
-            C.append(list(line.strip()))
-
+            C.append(list(line.strip().upper()))
     return C
 
 
@@ -150,6 +149,7 @@ def find_words(dictionary, array):
         # for each word, calculate the possible starts and directions depending
         # upon the first two letters of the word
         for word in wordlist:
+            print(word)
             queue = list()
             # for each x,y index in position_to_neighbours, check if the second letter in
             # the word is in the neighbours of the instance of the first word
@@ -178,14 +178,14 @@ def find_words(dictionary, array):
                 f = queue.pop(0)
                 # index, direction, length = foundword from queue set
                 next_letter = array.direction_find(f.index, f.direction, letter)
-                # if not the next letter discard
+                # Edge of the array case
                 if not next_letter:
                     # Check if we need to start looking at the next letter
                     if added_back == len(queue):
                         added_back = 0
                         letter += 1
                     continue
-                # If it is add it back
+                # If we've reached the end of the length of the word
                 if letter == f.length:
                     for f in queue:
                         found.add(f)
@@ -198,10 +198,21 @@ def find_words(dictionary, array):
                     added_back = 0
                     letter += 1
 
-            if not queue:
-                print("Word not found:", word)
-            else:
+            if len(queue) > 1:
+                pass
+            elif len(queue) == 1:
+                flag = True
                 f = queue.pop()
+                for i in range(letter, f.length-1):
+                    next_letter = array.direction_find(f.index, f.direction, letter)
+                    if word[i] != next_letter:
+                        print("Word not found:", word)
+                        flag = False
+                    letter +=  1
+                if flag == True:
+                    found.add(f)
+            else:
+                print("Word not found:", word)
                 found.add(f)
 
             # TODO: Handle Fucked up word searches. What happens if there are two
