@@ -42,6 +42,8 @@ def arrayfromfile(filename):
                 line = line.replace('!', 'I')
             if '1' in line:
                 line = line.replace('1', 'I')
+            if '2' in line:
+                line = line.replace('2', 'Z')
             C.append(list(line.strip()))
 
     return C
