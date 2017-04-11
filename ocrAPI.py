@@ -5,12 +5,13 @@ def text_array_from_image(imagefile):
     print("Get array text")
     writefile = "array.txt"
     key = '6085b04c132cb3bf1b3cfd998e901d6e' # GET KEY
-
     POSTURL = 'http://api.newocr.com/v1/upload?key=' + key #GET API KEY BEFORE RUNNING
 
     pdb.set_trace()
 
-    req = requests.post(POSTURL, name='file', files=imagefile)
+    multipartdata = {"name":"file", "filename":imagefile, "Content-Type":"image/jpeg"}
+    req = requests.post(POSTURL, files=multipartdata)
+
     if req.status_code != 200:
         raise Exception('API call failed (POST) [{} {}]'.format(req.status_code, req.reason))
 
@@ -21,6 +22,7 @@ def text_array_from_image(imagefile):
 
     print("f_ID", f_ID)
     GETURL = 'http://api.newocr.com/v1/ocr?key=' + key + '&file_id=' + f_ID + '&page=1&lang=eng&psm=3'
+    pdb.set_trace()
     data = requests.get(GETURL)
 
     if data.status_code != 200:
@@ -46,7 +48,10 @@ def text_wordlist_from_image(imagefile):
 
     POSTURL = 'http://api.newocr.com/v1/upload?key=' + key#GET API KEY BEFORE RUNNING
 
-    req = requests.post(POSTURL, name='file', files=imagefile)
+    multipartdata = {"name":"file", "filename":imagefile, "Content-Type":"image/jpeg"}
+
+    req = requests.post(POSTURL, files=multipartdata)
+
     if req.status_code != 200:
         raise Exception('API call failed (POST) [{} {}]'.format(req.status_code, req.reason))
 
