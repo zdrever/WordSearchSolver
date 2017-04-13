@@ -4,10 +4,6 @@ class CharArray:
     Attributes:
         array:
             2D array (list of lists)
-        height:
-            max index of rows
-        width:
-            max index of columns
 
     Methods:
         height:
@@ -28,6 +24,7 @@ class CharArray:
     directions = [(-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1)]
 
     def __getitem__(self, index):
+        '''Enables Indexing'''
         return self.array[index]
 
     def append(self, v):
