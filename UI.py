@@ -7,6 +7,13 @@ import ocrAPI
 
 
 def resetprogram(root, frame):
+    ''' Restarts the program. Goes to start screen immediately.
+
+    Args:
+        root: window which contains all other widgets
+        frame: adjustable widget that other widgets can be placed on
+
+    '''
 
     #clears frame and recreates a blank one
     frame.destroy()
@@ -17,6 +24,13 @@ def resetprogram(root, frame):
     startscreen(root,frame)
 
 def startscreen(root, frame):
+    ''' Start screen shown at beginning of program. Contains Continue button which allows you to progress through the program.
+
+    Args:
+        root: window which contains all other widgets
+        frame: adjustable widget that other widgets can be placed on
+
+    '''
 
     #prints entry message
     entrymessage = Label(master = frame, text="Hello and welcome to Zach and Conor's Word Search Solver! \n Press the button below to continue!", font = (16))
@@ -30,6 +44,13 @@ def startscreen(root, frame):
     continue_button.place(relx=0.5, rely=0.6, anchor = "center")
 
 def continuetopage2(root, frame):
+    '''Screen where you choose your file. Contains Choose File button.
+
+    Args:
+        root: window which contains all other widgets
+        frame: adjustable widget that other widgets can be placed on
+
+    '''
 
     #erasing writing from before
     frame.destroy()
@@ -48,6 +69,13 @@ def continuetopage2(root, frame):
     file_button.place(relx=0.5, rely=0.6, anchor="center")
 
 def openfile(root,frame):
+    ''' Opens window where user chooses file. Once files are chosen, continue to printing out the array and wordbank.
+
+    Args:
+        root: window which contains all other widgets
+        frame: adjustable widget that other widgets can be placed on
+
+    '''
 
     #Declaring which file types are allowed
     allowedfiletypes = [ ('Allowed File Types', '*.txt ; *.png ; *.jpeg ; *.jpg'), ('All File Types', '*') ]
@@ -91,7 +119,7 @@ def openfile(root,frame):
         print(wordbankfile)
         # write to the file words.txt the response from the API server
         ocrAPI.text_wordlist_from_image(wordbankfile)
-        dicttofind, wordcount = serach.dictionaryfromfile('words.txt')
+        dicttofind, wordcount = search.dictionaryfromfile('words.txt')
         foundwords = search.find_words(dicttofind, wordarray)
 
     #checking if both files have been selected, once both files have been selected move to (printtextfiletoUI)
@@ -106,7 +134,19 @@ def openfile(root,frame):
 
 
 def printtextfiletoUI(wordarray, heightofarray, widthofarray, root, frame, foundwords, dicttofind, wordcount):
+    ''' Prints the array file and word bank file to tkinter. Creates solve button that can be pressed to solve the wordsearch.
 
+    Args:
+        wordarrary: instance of the CharArray class. It is an array created from a textfile.
+        heightofarray: The height of the word array
+        widthofarray: The width of the word array
+        root: window which contains all other widgets
+        frame: adjustable widget that other widgets can be placed on
+        foundwords: list of words found in the word array - only passed to be passed through to highlightsolution()
+        dicttofind: list of words to find, word bank created from this list
+        wordcount: number of words to find. Used to create dimensions of word bank
+
+    '''
     #using letters for variables for ease of calculations
     a = widthofarray
     b = heightofarray
@@ -122,23 +162,56 @@ def printtextfiletoUI(wordarray, heightofarray, widthofarray, root, frame, found
     #finding the max word length for use in calculations
     d = max(len(w) for w in wordstoprint)
 
-    #creating grid upon which letters are placed
-    textgrid = Canvas(master = frame, width = a * 40, height = b * 40, bg = "white")
-    textgrid.pack()
-    textgrid.place(relx = 0.4, rely = 0.5, anchor = "center")
-    #creating the black lines of the grid
-    for i in range(a):
-        textgrid.create_line(i*40, 0, i*40, a*40)
-        textgrid.create_line(0, i*40 , a*40, i*40 )
-        for j in range(a):
-            textgrid.create_text(j*40 + 20, i*40 + 20, text = wordarray[i][j], font = 16)
+    print("a:  ", a)
+    print("b:  ", b)
 
+    #square array - nearly all wordsearches are square
+    if a == b:
+        #creating grid upon which letters are placed
+        textgrid = Canvas(master = frame, width = a * 40, height = a * 40, bg = "white")
+        textgrid.pack()
+        textgrid.place(relx = 0.4, rely = 0.5, anchor = "center")
+        #creating the black lines of the grid
+        for i in range(a):
+            #vertical lines
+            textgrid.create_line(i*40, 0, i*40, a*40)
+            #horizontal lines
+            textgrid.create_line(0, i*40 , a*40, i*40 )
+            for j in range(a):
+                textgrid.create_text(j*40 + 20, i*40 + 20, text = wordarray[i][j], font = 16)
+
+    # width < height
+    if a < b:
+        textgrid = Canvas(master = frame, width = a * 40, height = b * 40, bg = "white")
+        textgrid.pack()
+        textgrid.place(relx = 0.4, rely = 0.5, anchor = "center")
+        #creating the black lines of the grid
+        for i in range(b):
+            textgrid.create_line(i*40, 0, i*40, b*40)
+            textgrid.create_line(0, i*40 , a*40, i*40 )
+            for j in range(a):
+                textgrid.create_text(j*40 + 20, i*40 + 20, text = wordarray[i][j], font = 16)
+
+    #width > height
+    if a > b:
+        textgrid = Canvas(master = frame, width = a * 40, height = b * 40, bg = "white")
+        textgrid.pack()
+        textgrid.place(relx = 0.4, rely = 0.5, anchor = "center")
+        #creating the black lines of the grid
+        for i in range(a):
+            textgrid.create_line(i*40, 0, i*40, b*40)
+            textgrid.create_line(0, i*40 , a*40, i*40 )
+            for j in range(b):
+                textgrid.create_text(i*40 + 20, j*40 + 20, text = wordarray[j][i], font = 16)
+
+
+    #TODO: make wordbank fixed on the right side of the array rather than on one location
 
     #creating a wordbank the user can see, if less than 35 words we make one single list
     if c < 35:
 
         #making the background for the wordbank
-        wordbank = Canvas(master = frame, width = d*14 + 20, height = c*20 + 25 , bg = "white")
+        wordbank = Canvas(master = frame, width = d*14 + 20, height = c*25 + 20 , bg = "white")
         wordbank.pack()
         wordbank.place(relx = 0.8, rely = 0.5, anchor = "center")
 
@@ -166,6 +239,16 @@ def printtextfiletoUI(wordarray, heightofarray, widthofarray, root, frame, found
 
 
 def highlightsolution(wordarray, FoundWord, textgrid,root, frame):
+    ''' Highlights the solution on the word array.
+
+    Args:
+        wordarrary: instance of the CharArray class. It is an array created from a textfile.
+        FoundWord: list of words found in the word array - Instance of the class FoundWord
+        textgrid: Array of letters put onto a grid which displays the letters
+        root: window which contains all other widgets
+        frame: adjustable widget that other widgets can be placed on
+
+    '''
 
     #Reset button - just writes on top of solve button
     resetbutton = Button(master = frame, text = "Restart Program", font = 18)
@@ -180,12 +263,6 @@ def highlightsolution(wordarray, FoundWord, textgrid,root, frame):
         length = f.length
         startingx = (column*40)
         startingy = (row*40)
-
-
-    # messy code ahead - sorry! TODO: maybe try clean up by grouping some directions together? Could probably
-    #work out a way to use dx, dy as multiples so I could group all the horizontal/verticals together, anything going backwards
-    #was giving me problems through
-
 
     #Highlighting the solution with a yellow line through the letters
 
