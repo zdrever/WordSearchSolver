@@ -38,12 +38,12 @@ def startscreen(root, frame):
     entrymessage.place(relx=0.5, rely=0.5, anchor="center")
     root.update()
 
-    #prints continue button, if clicked will go to continuetopage2()
-    continue_button = Button(master = frame, text="Continue",font = (16),command = lambda : continuetopage2(root, frame))
+    #prints continue button, if clicked will go to choosefilescreen()
+    continue_button = Button(master = frame, text="Continue",font = (16),command = lambda : choosefilescreen(root, frame))
     continue_button.pack()
     continue_button.place(relx=0.5, rely=0.6, anchor = "center")
 
-def continuetopage2(root, frame):
+def choosefilescreen(root, frame):
     '''Screen where you choose your file. Contains Choose File button.
 
     Args:
@@ -162,9 +162,6 @@ def printtextfiletoUI(wordarray, heightofarray, widthofarray, root, frame, found
     #finding the max word length for use in calculations
     d = max(len(w) for w in wordstoprint)
 
-    print("a:  ", a)
-    print("b:  ", b)
-
     #square array - nearly all wordsearches are square
     if a == b:
         #creating grid upon which letters are placed
@@ -213,7 +210,7 @@ def printtextfiletoUI(wordarray, heightofarray, widthofarray, root, frame, found
         #making the background for the wordbank
         wordbank = Canvas(master = frame, width = d*14 + 20, height = c*25 + 20 , bg = "white")
         wordbank.pack()
-        wordbank.place(relx = 0.8, rely = 0.5, anchor = "center")
+        wordbank.place(relx = 0.9, rely = 0.5, anchor = "e")
 
         #printing the words for the wordbank
         for i in range(c):
@@ -224,7 +221,7 @@ def printtextfiletoUI(wordarray, heightofarray, widthofarray, root, frame, found
         #making the background
         wordbank = Canvas(master = frame, width = 2*d*14 + 10, height = c*13, bg = "white")
         wordbank.pack()
-        wordbank.place(relx = 0.8, rely = 0.5, anchor = "center")
+        wordbank.place(relx = 0.9, rely = 0.5, anchor = "e")
 
         #printing the words
         for i in range(int(c/2)):
