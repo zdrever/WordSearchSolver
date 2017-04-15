@@ -132,7 +132,6 @@ def word_bfs(word, queue, array):
                 letter += 1
             continue
         if letter == len(word):
-            print(len(queue))
             break
         # If we've reached the end of the length of the word
         if word[letter] == next_letter:
@@ -149,7 +148,7 @@ def word_bfs(word, queue, array):
     if len(queue) == 1:
         flag = True
         f = queue.pop()
-        for i in range(letter, f.length-1):
+        for i in range(letter, f.length):
             next_letter = array.direction_find(f.index, f.direction, letter)
             if word[i] != next_letter:
                 flag = False
@@ -227,7 +226,7 @@ def find_words(dictionary, array):
         remaining. The last element is the found word. Store this found word in
         the set 'found' that is returned at the end.
 
-            This bfs is done in word_bfs()
+            The bfs is done in word_bfs()
 
     Args:
         words: dict that maps the start letter of words to all words that start
