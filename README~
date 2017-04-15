@@ -1,7 +1,7 @@
 Word Search Solver with UI
 
 Zach Drever (1446384)
-Conor McQuitty (1468711)
+Conor McQuitty (PUT YOUR NUMBA HERE)
 
 This project started with the idea of creating an image to word
 search solver. We found that google OCR and some other OCR software
@@ -22,7 +22,7 @@ if you select an image file it will try to ping newOCR.com, however it will
 only receive a 400 Error back (bad request).
 
 Otherwise, we have included test cases to show the use of our solver UI
-and algorithm in .txt file format. 
+and algorithm in .txt file format.
 
 In terms of our UI, there are some limitations that tkinter creates. If you
 try to solve an array larger than 20x20, the rows and columns will not
@@ -30,6 +30,5 @@ completely fit into the frame. We decided that instead of returning an
 exception for the array being too large (which makes it sound like our back
 end doesn't support larger arrays) we would leave it in so that larger
 arrays can be tested and checked, even if they don't look great on the UI.
-This can be seen in Test Case 7. 
 
 The UI was designed and tested in an Ubuntu VM.
